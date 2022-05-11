@@ -9,6 +9,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    caret,
     dplyr
 RoxygenNote: 7.1.2
 Suggests: 
