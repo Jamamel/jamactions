@@ -1,0 +1,65 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  pull_request:
+    branches: [main, master]
+
+
+name: R-CMD-Check
+
+
+jobs:
+  R-CMD-Chek:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      # We keep a matrix for convenience, but we would typically just run on one
+      # single OS and R version, aligned with the target deployment environment
+      matrix:
+        config:
+          - {os: ubuntu-latest, r: '3.6.3'}
+          - {os: ubuntu-latest, r: 'latest'}
+          - {os: ubuntu-18.04, r: '3.6.3'}
+          - {os: ubuntu-18.04, r: 'latest'}
+          - {os: windows-latest, r: '3.6.3'}
+          - {os: windows-latest, r: 'latest'}
+
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out Github repo
+        uses: actions/checkout@v2
+
+
+      - name: Install Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          use-public-rspm: true
+
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+
+      - name: Check R Package
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          args: 'c("--no-manual", "--as-cran", "--no-multiarch")'
+          error-on: '"error"'
+          check-dir: '"check"'
+
