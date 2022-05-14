@@ -21,6 +21,8 @@ jobs:
         config:
           - {os: ubuntu-latest, r: '3.6.3'}
           - {os: ubuntu-latest, r: 'latest'}
+          - {os: ubuntu-18.04, r: '3.6.3'}
+          - {os: ubuntu-18.04, r: 'latest'}
           - {os: windows-latest, r: '3.6.3'}
           - {os: windows-latest, r: 'latest'}
 
