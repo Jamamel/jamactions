@@ -10,7 +10,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     caret,
-    dplyr
+    dplyr,
+    nloptr
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)

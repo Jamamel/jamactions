@@ -5,7 +5,7 @@ on:
     branches: [main, master]
 
 
-name: R-CMD-Check
+name: Deps - R-CMD-Check
 
 
 jobs:
@@ -40,7 +40,10 @@ jobs:
 
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+        run: |
+          sudo apt-get update -y && sudo apt-get install -y \
+          libcurl4-openssl-dev \
+          cmake
 
 
       - name: Install R
@@ -50,13 +53,11 @@ jobs:
           use-public-rspm: true
 
 
-      - name: renv install and restore with cache
-        uses: r-lib/actions/setup-renv@v2
-
-
-      - name: Install R CMD check
-        run: install.packages("rcmdcheck")
-        shell: Rscript {0}
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
 
 
       - name: Check R Package
