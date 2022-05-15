@@ -41,8 +41,7 @@ jobs:
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get update -y \
-          sudo apt-get install -y \
+          sudo apt-get update -y && sudo apt-get install -y \
           libcurl4-openssl-dev \
           cmake
 
